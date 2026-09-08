@@ -11,6 +11,114 @@
   background-color: #f5f5f5;
 }
 
+.content-shell {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-playground {
+  padding: 14px 15px 10px;
+  border-bottom: 1px solid #e5e5e5;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+}
+
+.playground-header {
+  margin-bottom: 12px;
+}
+
+.playground-header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #222;
+}
+
+.playground-header p {
+  margin: 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.playground-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.input-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.input-card h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: #1f2937;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.field-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.wijmo-input-host {
+  width: 100%;
+  min-height: 34px;
+}
+
+.wijmo-calendar-host {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.state-note {
+  margin: 8px 0 0;
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-layer {
+  background: #fff;
+  border: 1px solid #dbe5f1;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.2);
+  overflow: hidden;
+}
+
+.popup-layer-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid #ececec;
+  background: #f8fafc;
+  font-weight: 700;
+  color: #111827;
+}
+
+.popup-layer-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 280px;
+}
+
 .header {
   background-color: #fff;
   padding: 20px;
@@ -80,19 +188,110 @@
 
 .grid-wrapper {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   padding: 15px;
 }
 
+.grid-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-status {
+  color: #555;
+  font-size: 13px;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
 .wijmo-grid {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 96px);
   border: 1px solid #ddd;
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-bar {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-page {
+  border: none;
+  background: none;
+  color: #333;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.btn-page:hover:not(:disabled) {
+  color: #111;
+}
+
+.page-arrow-one-icon {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.page-arrow-two-icon {
+  width: 9px;
+  height: 9px;
+  display: block;
+}
+
+.btn-page:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-number-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 210px;
+}
+
+.btn-page-number {
+  min-width: 36px;
+  font-weight: 500;
+}
+
+.btn-page-number.active {
+  color: #007bff;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 /* Wijmo FlexGrid 스타일 커스터마이징 */
@@ -108,6 +307,16 @@
   padding: 10px 12px;
   border-color: #e0e0e0;
   border-width: 0 1px 1px 0;
+  color: #333;
+}
+
+.wj-cells .wj-cell.wj-state-selected {
+  background-color: #c5dcff;
+  color: #333;
+}
+
+.wj-cells .wj-cell.wj-state-multi-selected {
+  background-color: #e3eeff;
   color: #333;
 }
 
@@ -173,10 +382,10 @@
 /* 검색 버튼 스타일 */
 .search-btn {
   background: none;
-  border: none;
+  border: solid 1px #ccc;
   cursor: pointer;
   font-size: 16px;
-  padding: 2px 4px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,6 +421,12 @@
 .search-btn:active {
   background-color: #d0d0d0;
   transform: scale(0.95);
+}
+
+.search-btn {
+  content: url("assets/search.png");
+  width: 20px;
+  height: 20px;
 }
 
 .calendar-btn:active {
@@ -279,6 +494,18 @@
 
   .instructions {
     font-size: 12px;
+  }
+
+  .wijmo-grid {
+    height: calc(100% - 140px);
+  }
+
+  .pagination-bar {
+    justify-content: center;
+  }
+
+  .page-number-list {
+    min-width: auto;
   }
 }
 
