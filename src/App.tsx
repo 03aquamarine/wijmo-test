@@ -17,6 +17,11 @@ import arrowFirst from "./assets/arrow_first.png";
 import arrowLast from "./assets/arrow_last.png";
 import arrowLeft from "./assets/arrow_left.png";
 import arrowRight from "./assets/arrow_right.png";
+import plusIcon from "./assets/plus.png";
+import deleteIcon from "./assets/delete.png";
+import csvIcon from "./assets/xlsx.png";
+import searchIcon from "./assets/search.png";
+import calendarIcon from "./assets/calendar.svg";
 
 interface Product {
 	id: number;
@@ -145,9 +150,10 @@ function App() {
 	const [rangeStartValue, setRangeStartValue] = useState<Date>(new Date());
 	const [rangeEndValue, setRangeEndValue] = useState<Date>(dayjs().add(7, "day").toDate());
 	const [demoDropdownValue, setDemoDropdownValue] = useState<string>(DEMO_DROPDOWN_OPTIONS[0].value);
-	const [popup, setPopup] = useState<wjInput.Popup | null>(null);
+	const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false);
 
 	const gridInstanceRef = useRef<wjGridCore.FlexGrid | null>(null);
+	const popupInstanceRef = useRef<wjInputCore.Popup | null>(null);
 	const collectionViewRef = useRef<wjCore.CollectionView<Product> | null>(null);
 	const tooltipRef = useRef<wjCore.Tooltip | null>(null);
 	const gridKeyDownListenerRef = useRef<((event: KeyboardEvent) => void) | null>(null);
@@ -426,6 +432,7 @@ function App() {
 
 		return () => {
 			tooltip.dispose();
+			popupInstanceRef.current = null;
 			if (gridInstanceRef.current && gridKeyDownListenerRef.current) {
 				gridInstanceRef.current.hostElement.removeEventListener(
 					"keydown",
@@ -496,9 +503,12 @@ function App() {
 		alert(`${item.productName} 상품 검색\n\n${JSON.stringify(item, null, 2)}`);
 	};
 
-	const handlePopupToggle = (e) => {
-		if (popup) {
-			popup.show(false);
+	const handlePopupToggle = () => {
+		const popup = popupInstanceRef.current;
+		if (!popup) return;
+
+		if (popup.isVisible) {
+			popup.hide();
 		} else {
 			popup.show(true);
 		}
@@ -788,7 +798,7 @@ function App() {
 				<div class="product-cell">
 					<span>${originalText}</span>
 					<button class="search-btn" title="상품 검색">
-						<img class="search-btn" alt="검색"/>
+						<img class="search-btn-icon" src="${searchIcon}" alt="검색"/>
 					</button>
 				</div>
 				`;
@@ -810,7 +820,9 @@ function App() {
 				cell.innerHTML = `
 					<div class="date-cell">
 						<span>${formattedDate}</span>
-						<button class="calendar-btn" title="날짜 선택">📅</button>
+						<button class="calendar-btn" title="날짜 선택">
+							<img class="calendar-btn-icon" src="${calendarIcon}" alt="날짜 선택"/>
+						</button>
 					</div>
 				`;
 
@@ -854,18 +866,7 @@ function App() {
 	return (
 		<div className="app-container">
 			<div className="header">
-				<h1>신도시 - 위즈모 컴포넌트 테스트</h1>
-				<div className="button-group">
-					<button onClick={handleAddRow} className="btn btn-primary">
-						➕ 행 추가
-					</button>
-					<button onClick={handleDeleteRow} className="btn btn-danger">
-						🗑️ 행 삭제
-					</button>
-					<button onClick={handleExportToExcel} className="btn btn-success">
-						📥 CSV 일괄 다운로드
-					</button>
-				</div>
+				<h1>신도시 - 위즈모 테스트</h1>
 			</div>
 
 			<div className="content-shell">
@@ -989,11 +990,16 @@ function App() {
 							<h3>Popup</h3>
 							<div className="popup-actions">
 								<button type="button" className="btn btn-primary" onClick={handlePopupToggle}>
-									레이어 팝업 열기{wjInputCore.PopupTrigger ? " (열림)" : ""}
+									레이어 팝업 {isPopupVisible ? "닫기" : "열기"}
 								</button>
 								<span className="state-note">모달 레이어와 위치 표시를 함께 테스트합니다.</span>
 							</div>
 							<wjInput.Popup
+								initialized={(popup: wjInputCore.Popup) => {
+									popupInstanceRef.current = popup;
+								}}
+								showing={() => setIsPopupVisible(true)}
+								hidden={() => setIsPopupVisible(false)}
 								modal={true}
 								showTrigger={wjInputCore.PopupTrigger.None}
 								hideTrigger={wjInputCore.PopupTrigger.None}
@@ -1019,6 +1025,20 @@ function App() {
 
 				<div className="grid-wrapper">
 					<div className="grid-toolbar">
+						<div className="grid-action-buttons" aria-label="그리드 동작 버튼">
+							<button onClick={handleAddRow} className="grid-action-btn grid-action-btn-add" type="button">
+								<img className="grid-action-btn-icon" src={plusIcon} alt="" aria-hidden="true" />
+								<span>행 추가</span>
+							</button>
+							<button onClick={handleDeleteRow} className="grid-action-btn grid-action-btn-delete" type="button">
+								<img className="grid-action-btn-icon" src={deleteIcon} alt="" aria-hidden="true" />
+								<span>행 삭제</span>
+							</button>
+							<button onClick={handleExportToExcel} className="grid-action-btn grid-action-btn-csv" type="button">
+								<img className="grid-action-btn-icon" src={csvIcon} alt="" aria-hidden="true" />
+								<span>엑셀 다운로드</span>
+							</button>
+						</div>
 						<div className="toolbar-row toolbar-status">
 							<span>총 {totalCount.toLocaleString()}건</span>
 							{isLoading ? <span>데이터 로딩 중...</span> : null}
